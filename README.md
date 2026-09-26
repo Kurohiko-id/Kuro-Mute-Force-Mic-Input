@@ -4,6 +4,8 @@
 
 Mute your microphone with a fully customizable hotkey and overlay. Force Windows to keep the input and output device you actually picked, so your apps stop losing their audio settings every time Windows switches them behind your back.
 
+I love Mute Microphone VCM Feature, but they removed it. I've been stuck in powertoys v0.87.1. and now I Made my own app that has better feature. Because it can force my audio Default Input.
+
 Language: [English](#english) | [Bahasa Indonesia](#bahasa-indonesia)
 
 ---
