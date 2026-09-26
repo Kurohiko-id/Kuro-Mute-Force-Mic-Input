@@ -7,10 +7,8 @@ static class Program
     {
         ApplicationConfiguration.Initialize();
 
-        // System.Windows.Application can only ever be constructed once per process,
-        // so it's created here, up front, rather than lazily when Settings first opens.
-        _ = new App();
-
+        // The WPF Application (PresentationFramework/Core, milcore, ...) is only needed
+        // when Settings opens (see TrayApp.Full.cs), so it's never constructed here.
         Application.Run(new TrayApp());
     }
 }

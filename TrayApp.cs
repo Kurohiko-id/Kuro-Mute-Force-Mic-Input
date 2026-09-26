@@ -6,7 +6,7 @@ using Microsoft.Win32;
 
 namespace MuteMic;
 
-internal sealed class TrayApp : ApplicationContext
+internal sealed partial class TrayApp : ApplicationContext
 {
     [DllImport("user32.dll")]
     private static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -18,8 +18,7 @@ internal sealed class TrayApp : ApplicationContext
     private List<OverlayForm> _overlays = [];
     private List<BorderGlowForm> _borders = [];
     private readonly DeviceChangeToast _deviceToast = new();
-    private readonly Icon _mutedIcon = LoadIcon("kuro-mute-on.png");
-    private readonly Icon _unmutedIcon = LoadIcon("kuro-mute-off.png");
+    private readonly Icon _icon = LoadIcon("app.ico");
     private IDisposable? _muteSub;
     private IDisposable? _audioWatchSub;
 
@@ -28,7 +27,7 @@ internal sealed class TrayApp : ApplicationContext
         var menu = BuildMenu();
         _tray = new NotifyIcon
         {
-            Icon = _unmutedIcon,
+            Icon = _icon,
             Visible = true,
             Text = "Kuro Mute & Force Mic",
             ContextMenuStrip = menu,
@@ -92,13 +91,8 @@ internal sealed class TrayApp : ApplicationContext
         Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
     }
 
-    private void OpenSettings()
-    {
-        var window = new SettingsWindow(_controller, _settings);
-        window.SettingsChanged += ApplyAllSettings;
-        window.ShowDialog();
-        window.SettingsChanged -= ApplyAllSettings;
-    }
+    // OpenSettings() lives in TrayApp.Full.cs (WPF SettingsWindow) or TrayApp.Lite.cs
+    // (WinForms SettingsFormLite) — whichever one the edition's .csproj compiles in.
 
     // Settings now autosave, so this re-applies everything live after every single
     // change (hotkey checkbox, toggle, slider, ...) rather than once on a Save click.
@@ -177,8 +171,6 @@ internal sealed class TrayApp : ApplicationContext
         if (device is null)
             return;
 
-        _deviceToast.BeginInvoke(() => _tray.Icon = device.IsMuted ? _mutedIcon : _unmutedIcon);
-
         // MuteChanged fires on a Core Audio COM callback thread, not the UI thread.
         _muteSub = device.MuteChanged.Subscribe(
             new AnonymousObserver<DeviceMuteChangedArgs>(args =>
@@ -187,16 +179,15 @@ internal sealed class TrayApp : ApplicationContext
                     overlay.BeginInvoke(() => overlay.ShowMuteState(args.IsMuted));
                 foreach (var border in _borders)
                     border.BeginInvoke(() => border.SetMuted(args.IsMuted));
-                _deviceToast.BeginInvoke(() => _tray.Icon = args.IsMuted ? _mutedIcon : _unmutedIcon);
             }));
     }
 
-    private static Icon LoadIcon(string resourceName)
+    // Embedded resource (not a WPF pack:// resource) so this has no dependency on
+    // System.Windows.Application ever being constructed.
+    internal static Icon LoadIcon(string resourceName)
     {
-        var uri = new Uri($"pack://application:,,,/{resourceName}");
-        using var stream = System.Windows.Application.GetResourceStream(uri)!.Stream;
-        using var bitmap = new Bitmap(stream);
-        return Icon.FromHandle(bitmap.GetHicon());
+        using var stream = typeof(TrayApp).Assembly.GetManifestResourceStream(resourceName)!;
+        return new Icon(stream);
     }
 
     private void OnHotkeyPressed()

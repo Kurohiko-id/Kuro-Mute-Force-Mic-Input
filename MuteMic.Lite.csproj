@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>Kuro MuteMic Lite</AssemblyName>
+    <RootNamespace>MuteMic</RootNamespace>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>1.1.0</Version>
+    <AssemblyTitle>Kuro Mute &amp; Force Mic (Lite)</AssemblyTitle>
+    <Product>Kuro Mute &amp; Force Mic (Lite)</Product>
+    <Description>Lite edition: same mute hotkey, overlay and force-audio-device behavior as the full app, with a plain WinForms settings window instead of the WPF one — smaller download, lower RAM, no WPF.</Description>
+    <Company>Kurohiko-id</Company>
+    <Copyright>Copyright © Kurohiko-id</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="3.0.3" />
+  </ItemGroup>
+
+  <!-- Same app.ico embedded as a plain resource for TrayApp's own tray-icon loader. -->
+  <ItemGroup>
+    <EmbeddedResource Include="app.ico" LogicalName="app.ico" />
+  </ItemGroup>
+
+  <!-- Full-edition-only sources (built by MuteMic.csproj instead): WPF entry point,
+       WPF Application host, and the Fluent settings window + its markup. -->
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+    <Compile Remove="TrayApp.Full.cs" />
+    <Compile Remove="App.xaml.cs" />
+    <Compile Remove="SettingsWindow.xaml.cs" />
+  </ItemGroup>
+
+</Project>

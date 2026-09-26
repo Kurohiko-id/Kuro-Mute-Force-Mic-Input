@@ -9,7 +9,7 @@
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <AssemblyTitle>Kuro Mute &amp; Force Mic</AssemblyTitle>
     <Product>Kuro Mute &amp; Force Mic</Product>
     <Description>Mute your microphone with a fully customizable hotkey and overlay. Force Windows to keep the input device you actually picked, so your apps stop losing their audio settings every time Windows switches it behind your back.</Description>
@@ -24,14 +24,27 @@
 
   <ItemGroup>
     <Resource Include="kuro-mute-mic-logo.png" />
-    <Resource Include="kuro-mute-on.png" />
-    <Resource Include="kuro-mute-off.png" />
+  </ItemGroup>
+
+  <!-- Same app.ico also embedded as a plain resource (not a WPF pack:// resource) so
+       TrayApp can load it for the tray icon with no dependency on
+       System.Windows.Application ever being constructed. -->
+  <ItemGroup>
+    <EmbeddedResource Include="app.ico" LogicalName="app.ico" />
   </ItemGroup>
 
   <!-- Program.cs owns Main; keep App.xaml as a plain resource dictionary host, not an auto-generated entry point. -->
   <ItemGroup>
     <ApplicationDefinition Remove="App.xaml" />
     <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <!-- Lite-edition-only sources (built by MuteMic.Lite.csproj instead); excluded here
+       since SDK-style projects glob all *.cs in the folder by default. -->
+  <ItemGroup>
+    <Compile Remove="Program.Lite.cs" />
+    <Compile Remove="TrayApp.Lite.cs" />
+    <Compile Remove="SettingsFormLite.cs" />
   </ItemGroup>
 
 </Project>

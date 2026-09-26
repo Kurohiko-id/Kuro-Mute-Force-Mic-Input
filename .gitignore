@@ -1,5 +1,6 @@
 bin/
 obj/
 publish/
+publish-lite/
 Output/
 *.user
