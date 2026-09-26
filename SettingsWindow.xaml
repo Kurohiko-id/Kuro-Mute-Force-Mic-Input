@@ -1,0 +1,457 @@
+<ui:FluentWindow
+    x:Class="MuteMic.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:ClassModifier="internal"
+    Title="Kuro Mute &amp; Force Mic"
+    Icon="pack://application:,,,/kuro-mute-mic-logo.png"
+    Width="860"
+    Height="640"
+    MinWidth="760"
+    MinHeight="480"
+    ExtendsContentIntoTitleBar="True"
+    WindowBackdropType="Mica"
+    WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                Grid.Column="0"
+                Margin="8,44,8,0"
+                Background="Transparent">
+                <ui:Button
+                    x:Name="NavHomeButton"
+                    Height="40"
+                    Margin="0,2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Appearance="Secondary"
+                    Click="NavButton_Click"
+                    Tag="home">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Margin="4,0,12,0" Symbol="Home24" />
+                        <TextBlock Text="Home" />
+                    </StackPanel>
+                </ui:Button>
+                <ui:Button
+                    x:Name="NavMicButton"
+                    Height="40"
+                    Margin="0,2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Appearance="Transparent"
+                    Click="NavButton_Click"
+                    Tag="mic">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Margin="4,0,12,0" Symbol="Mic24" />
+                        <TextBlock Text="Mute &amp; Hotkey" />
+                    </StackPanel>
+                </ui:Button>
+                <ui:Button
+                    x:Name="NavForceAudioButton"
+                    Height="40"
+                    Margin="0,2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Appearance="Transparent"
+                    Click="NavButton_Click"
+                    Tag="force">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Margin="4,0,12,0" Symbol="Speaker224" />
+                        <TextBlock Text="Force Audio" />
+                    </StackPanel>
+                </ui:Button>
+                <ui:Button
+                    x:Name="NavOverlayButton"
+                    Height="40"
+                    Margin="0,2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Appearance="Transparent"
+                    Click="NavButton_Click"
+                    Tag="overlay">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Margin="4,0,12,0" Symbol="Alert24" />
+                        <TextBlock Text="Overlay" />
+                    </StackPanel>
+                </ui:Button>
+                <ui:Button
+                    x:Name="NavAboutButton"
+                    Height="40"
+                    Margin="0,2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Appearance="Transparent"
+                    Click="NavButton_Click"
+                    Tag="about">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Margin="4,0,12,0" Symbol="Info24" />
+                        <TextBlock Text="About" />
+                    </StackPanel>
+                </ui:Button>
+            </StackPanel>
+
+            <ScrollViewer Grid.Column="1" Padding="28,24,28,24" VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <!-- Home -->
+                    <DockPanel x:Name="HomeSection" LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="0,20,0,0" Orientation="Horizontal">
+                            <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Made by Kurohiko with 💗" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,20"
+                                FontSize="26"
+                                FontWeight="Bold"
+                                Text="Home" />
+
+                            <ui:CardControl Margin="0,0,0,12">
+                                <ui:CardControl.Icon>
+                                    <ui:SymbolIcon x:Name="StatusIcon" Symbol="Mic24" />
+                                </ui:CardControl.Icon>
+                                <ui:CardControl.Header>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Medium" Text="Mic status" />
+                                        <TextBlock x:Name="StatusText" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="No mic selected" />
+                                    </StackPanel>
+                                </ui:CardControl.Header>
+                            </ui:CardControl>
+
+                            <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon Keyboard24}">
+                                <ui:CardControl.Header>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Medium" Text="Active hotkey" />
+                                        <TextBlock x:Name="HotkeySummaryText" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" />
+                                    </StackPanel>
+                                </ui:CardControl.Header>
+                            </ui:CardControl>
+
+                            <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon DesktopSpeaker24}">
+                                <ui:CardControl.Header>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Medium" Text="Overlay mode" />
+                                        <TextBlock x:Name="OverlaySummaryText" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" />
+                                    </StackPanel>
+                                </ui:CardControl.Header>
+                            </ui:CardControl>
+
+                            <ui:CardControl Icon="{ui:SymbolIcon Power24}">
+                                <ui:CardControl.Header>
+                                    <TextBlock FontWeight="Medium" Text="Start this app when Windows starts" />
+                                </ui:CardControl.Header>
+                                <ui:ToggleSwitch x:Name="AutoStartToggle" Click="OnChanged" />
+                            </ui:CardControl>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Mute & Hotkey -->
+                    <StackPanel x:Name="MicSection" Visibility="Collapsed">
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            FontSize="26"
+                            FontWeight="Bold"
+                            Text="Mute &amp; Hotkey" />
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon Mic24}">
+                            <ui:CardControl.Header>
+                                <TextBlock FontWeight="Medium" Text="Mic to Mute" />
+                            </ui:CardControl.Header>
+                            <ComboBox x:Name="MicCombo" MinWidth="220" SelectionChanged="OnSelectionChanged" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Icon="{ui:SymbolIcon Keyboard24}">
+                            <ui:CardControl.Header>
+                                <TextBlock FontWeight="Medium" Text="Hotkey" />
+                            </ui:CardControl.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox x:Name="CtrlCheck" MinWidth="0" Margin="0,0,4,0" Click="OnChanged" Content="Ctrl" />
+                                <CheckBox x:Name="AltCheck" MinWidth="0" Margin="0,0,4,0" Click="OnChanged" Content="Alt" />
+                                <CheckBox x:Name="ShiftCheck" MinWidth="0" Margin="0,0,4,0" Click="OnChanged" Content="Shift" />
+                                <ComboBox x:Name="KeyCombo" Margin="6,0,0,0" MinWidth="70" SelectionChanged="OnSelectionChanged" />
+                            </StackPanel>
+                        </ui:CardControl>
+                    </StackPanel>
+
+                    <!-- Force Audio -->
+                    <StackPanel x:Name="ForceAudioSection" Visibility="Collapsed">
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            FontSize="26"
+                            FontWeight="Bold"
+                            Text="Force Audio" />
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon Mic24}">
+                            <ui:CardControl.Header>
+                                <TextBlock FontWeight="Medium" Text="Force default input" />
+                            </ui:CardControl.Header>
+                            <ComboBox x:Name="InputCombo" MinWidth="220" SelectionChanged="OnSelectionChanged" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Margin="0,0,0,24" Icon="{ui:SymbolIcon Speaker224}">
+                            <ui:CardControl.Header>
+                                <TextBlock FontWeight="Medium" Text="Force default output" />
+                            </ui:CardControl.Header>
+                            <ComboBox x:Name="OutputCombo" MinWidth="220" SelectionChanged="OnSelectionChanged" />
+                        </ui:CardControl>
+
+                        <TextBlock
+                            Margin="0,0,0,8"
+                            FontWeight="Medium"
+                            Text="When to force it" />
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon ArrowClockwise24}">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Medium" Text="Force on app start" />
+                                    <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Reset to the devices above every time the app launches" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:ToggleSwitch x:Name="ForceOnStartupToggle" Click="OnChanged" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Icon="{ui:SymbolIcon Alert24}">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Medium" Text="Watch &amp; notify" />
+                                    <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Notify when default audio changes" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:ToggleSwitch x:Name="WatchChangesToggle" Click="OnChanged" />
+                        </ui:CardControl>
+                    </StackPanel>
+
+                    <!-- Overlay -->
+                    <StackPanel x:Name="OverlaySection" Visibility="Collapsed">
+                        <TextBlock
+                            Margin="0,0,0,4"
+                            FontSize="26"
+                            FontWeight="Bold"
+                            Text="Overlay" />
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                            Text="Configure how mute feedback is shown." />
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon Alert24}">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Medium" Text="Show toast" />
+                                    <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="A small notification that auto-dismisses" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:ToggleSwitch x:Name="ShowToastToggle" Click="OnChanged" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon BorderOutside24}">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Medium" Text="Show screen border" />
+                                    <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="A frame around the monitor edge, click-through" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:ToggleSwitch x:Name="ShowBorderToggle" Click="OnChanged" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon Pin24}">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Medium" Text="Toast stays visible while muted" />
+                                    <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="When off, the toast auto-hides even while still muted" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:ToggleSwitch x:Name="PersistToggle" Click="OnChanged" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon ArrowMove24}">
+                            <ui:CardControl.Header>
+                                <TextBlock FontWeight="Medium" Text="Toast position" />
+                            </ui:CardControl.Header>
+                            <Border
+                                Width="170"
+                                Height="96"
+                                Background="#101114"
+                                BorderBrush="#33363c"
+                                BorderThickness="2"
+                                CornerRadius="6">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <Ellipse
+                                        x:Name="PosTopLeft"
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Width="14"
+                                        Height="14"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="PositionDot_Click"
+                                        StrokeThickness="2"
+                                        Tag="TopLeft" />
+                                    <Ellipse
+                                        x:Name="PosTopCenter"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Width="14"
+                                        Height="14"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="PositionDot_Click"
+                                        StrokeThickness="2"
+                                        Tag="TopCenter" />
+                                    <Ellipse
+                                        x:Name="PosTopRight"
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Width="14"
+                                        Height="14"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="PositionDot_Click"
+                                        StrokeThickness="2"
+                                        Tag="TopRight" />
+                                    <Ellipse
+                                        x:Name="PosBottomLeft"
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Width="14"
+                                        Height="14"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="PositionDot_Click"
+                                        StrokeThickness="2"
+                                        Tag="BottomLeft" />
+                                    <Ellipse
+                                        x:Name="PosBottomCenter"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Width="14"
+                                        Height="14"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Bottom"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="PositionDot_Click"
+                                        StrokeThickness="2"
+                                        Tag="BottomCenter" />
+                                    <Ellipse
+                                        x:Name="PosBottomRight"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Width="14"
+                                        Height="14"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="PositionDot_Click"
+                                        StrokeThickness="2"
+                                        Tag="BottomRight" />
+                                </Grid>
+                            </Border>
+                        </ui:CardControl>
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon ResizeLarge24}">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Medium" Text="Toast size" />
+                                    <TextBlock x:Name="ScaleValueText" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <Slider
+                                x:Name="ScaleSlider"
+                                Width="180"
+                                Maximum="200"
+                                Minimum="50"
+                                TickFrequency="10" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon BorderOutside24}">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Medium" Text="Border thickness" />
+                                    <TextBlock x:Name="ThicknessValueText" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <Slider
+                                x:Name="ThicknessSlider"
+                                Width="180"
+                                Maximum="30"
+                                Minimum="2"
+                                TickFrequency="2" />
+                        </ui:CardControl>
+
+                        <ui:CardControl Icon="{ui:SymbolIcon DesktopSpeaker24}">
+                            <ui:CardControl.Header>
+                                <TextBlock FontWeight="Medium" Text="Show on monitor" />
+                            </ui:CardControl.Header>
+                            <StackPanel x:Name="MonitorPanel" />
+                        </ui:CardControl>
+                    </StackPanel>
+
+                    <!-- About -->
+                    <StackPanel x:Name="AboutSection" Visibility="Collapsed">
+                        <TextBlock
+                            Margin="0,0,0,4"
+                            FontSize="26"
+                            FontWeight="Bold"
+                            Text="About" />
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            MaxWidth="520"
+                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                            Text="Mute your microphone with a fully customizable hotkey and overlay. Force Windows to keep the input device you actually picked, so your apps stop losing their audio settings every time Windows switches it behind your back."
+                            TextWrapping="Wrap" />
+
+                        <ui:CardControl Margin="0,0,0,12" Icon="{ui:SymbolIcon Info24}">
+                            <ui:CardControl.Header>
+                                <TextBlock FontWeight="Medium" Text="Version" />
+                            </ui:CardControl.Header>
+                            <TextBlock x:Name="VersionText" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" />
+                        </ui:CardControl>
+
+                        <ui:CardAction
+                            Margin="0,0,0,12"
+                            Click="GitHubCard_Click"
+                            Icon="{ui:SymbolIcon Code24}">
+                            <TextBlock FontWeight="Medium" Text="Source code on GitHub" />
+                        </ui:CardAction>
+
+                        <ui:CardAction
+                            Margin="0,0,0,12"
+                            Click="SaweriaCard_Click"
+                            Icon="{ui:SymbolIcon Heart24}">
+                            <TextBlock FontWeight="Medium" Text="Support Kurohiko on Saweria" />
+                        </ui:CardAction>
+
+                        <ui:CardAction Click="TopUpCard_Click" Icon="{ui:SymbolIcon Gift24}">
+                            <TextBlock FontWeight="Medium" Text="Support with a game top-up at KurohikoTopUp.com" />
+                        </ui:CardAction>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <ui:TitleBar x:Name="AppTitleBar" Title="Kuro Mute &amp; Force Mic">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="pack://application:,,,/kuro-mute-mic-logo.png" />
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+    </Grid>
+</ui:FluentWindow>
