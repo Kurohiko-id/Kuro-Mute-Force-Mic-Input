@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <AssemblyName>Kuro MuteMic</AssemblyName>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
@@ -12,6 +13,8 @@
     <AssemblyTitle>Kuro Mute &amp; Force Mic</AssemblyTitle>
     <Product>Kuro Mute &amp; Force Mic</Product>
     <Description>Mute your microphone with a fully customizable hotkey and overlay. Force Windows to keep the input device you actually picked, so your apps stop losing their audio settings every time Windows switches it behind your back.</Description>
+    <Company>Kurohiko-id</Company>
+    <Copyright>Copyright © Kurohiko-id</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
