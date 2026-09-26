@@ -1,3 +1,5 @@
+<img width="720" alt="Social" src="https://github.com/user-attachments/assets/c1af9e84-5e0b-465e-9579-04d4ee6410a6" />
+
 # Kuro Mute & Force Mic
 
 Mute your microphone with a fully customizable hotkey and overlay. Force Windows to keep the input and output device you actually picked, so your apps stop losing their audio settings every time Windows switches them behind your back.
