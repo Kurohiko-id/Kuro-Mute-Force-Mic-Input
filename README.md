@@ -9,6 +9,8 @@ I love Mute Microphone VCM Feature, but they removed it. I've been stuck in powe
 Language: [English](#english) | [Bahasa Indonesia](#bahasa-indonesia)
 
 ---
+<img width="1919" height="1079" alt="image (4)" src="https://github.com/user-attachments/assets/c41d8e27-2c2c-41cd-a121-37101e0c9437" />
+
 
 ## English
 
