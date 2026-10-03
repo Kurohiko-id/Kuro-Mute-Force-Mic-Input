@@ -5,7 +5,7 @@
 ; Output: Output\KuroMuteMic-Setup-{#MyAppVersion}.exe
 
 #define MyAppName "Kuro MuteMic"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.2.0"
 #define MyAppPublisher "Kurohiko-id"
 #define MyAppURL "https://github.com/Kurohiko-id/Kuro-Mute-Force-Mic-Input"
 #define MyAppExeName "Kuro MuteMic.exe"
