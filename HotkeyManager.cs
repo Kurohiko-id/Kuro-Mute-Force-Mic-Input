@@ -25,7 +25,9 @@ internal sealed class HotkeyManager : NativeWindow, IDisposable
     public void SetHotkey(uint modifiers, uint key)
     {
         UnregisterHotKey(Handle, HotkeyId);
-        RegisterHotKey(Handle, HotkeyId, modifiers, key);
+        var ok = RegisterHotKey(Handle, HotkeyId, modifiers, key);
+        if (!ok)
+            DebugLog.Write($"RegisterHotKey FAILED (mods={modifiers}, key={key}) — likely already bound by another app");
     }
 
     protected override void WndProc(ref Message m)

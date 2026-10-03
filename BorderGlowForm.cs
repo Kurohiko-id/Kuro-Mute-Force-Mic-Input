@@ -38,6 +38,7 @@ internal sealed class BorderGlowForm : Form
 
     protected override void OnPaint(PaintEventArgs e)
     {
+        DebugLog.Write("BorderGlowForm.OnPaint firing (actually drawing to screen)");
         using var pen = new Pen(BorderColor, Thickness);
         var rect = new Rectangle(Thickness / 2, Thickness / 2, Width - Thickness, Height - Thickness);
         e.Graphics.DrawRectangle(pen, rect);
@@ -45,7 +46,9 @@ internal sealed class BorderGlowForm : Form
 
     public void SetMuted(bool muted)
     {
+        DebugLog.Write($"BorderGlowForm.SetMuted({muted}) called, about to {(muted ? "Show" : "Hide")}");
         if (muted) Show();
         else Hide();
+        DebugLog.Write($"BorderGlowForm.{(muted ? "Show" : "Hide")}() call returned");
     }
 }

@@ -175,10 +175,16 @@ internal sealed partial class TrayApp : ApplicationContext
         _muteSub = device.MuteChanged.Subscribe(
             new AnonymousObserver<DeviceMuteChangedArgs>(args =>
             {
+                DebugLog.Write($"MuteChanged event received, IsMuted={args.IsMuted}");
                 foreach (var overlay in _overlays)
                     overlay.BeginInvoke(() => overlay.ShowMuteState(args.IsMuted));
                 foreach (var border in _borders)
-                    border.BeginInvoke(() => border.SetMuted(args.IsMuted));
+                    border.BeginInvoke(() =>
+                    {
+                        DebugLog.Write("Border.SetMuted starting (dispatched to UI thread)");
+                        border.SetMuted(args.IsMuted);
+                        DebugLog.Write("Border.SetMuted returned");
+                    });
             }));
     }
 
@@ -192,13 +198,24 @@ internal sealed partial class TrayApp : ApplicationContext
 
     private void OnHotkeyPressed()
     {
+        DebugLog.Write("Hotkey pressed");
+
         if (_settings.MicDeviceId is not { } id)
         {
             OpenSettings();
             return;
         }
 
-        _controller.GetDevice(id)?.ToggleMute();
+        var device = _controller.GetDevice(id);
+        DebugLog.Write("Calling ToggleMuteAsync");
+        // AudioSwitcher's synchronous ToggleMute() blocks the calling thread for up to 1000ms
+        // inside the library (CoreAudioDevice.Mute waits on a ManualResetEvent for a hardware
+        // confirmation that doesn't always arrive quickly). Calling it on this UI thread was
+        // freezing the whole message pump for that same second, which delayed the border/toast
+        // BeginInvoke callbacks even though the actual mute (and our MuteChanged subscription)
+        // already fired within milliseconds. Fire-and-forget on a background thread instead.
+        _ = device?.ToggleMuteAsync();
+        DebugLog.Write("ToggleMuteAsync dispatched (not awaited, fire-and-forget)");
     }
 
     private void ApplyDefaultDevicesOnce()
