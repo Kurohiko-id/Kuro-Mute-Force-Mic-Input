@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> **This project has moved to [Sirah Mute](https://github.com/Kurohiko-id/sirah-mute).**
+> Kuro Mute & Force Mic is no longer updated. Sirah Mute is its rewrite: lighter (one small exe, no .NET), a red glow border, a popup with a mute timer, and a warning when you talk while muted. It picks up your Kuro Mute settings automatically.
+>
+> **Proyek ini pindah ke [Sirah Mute](https://github.com/Kurohiko-id/sirah-mute).** Kuro Mute nggak di-update lagi. Settingan lama otomatis kebawa ke Sirah Mute.
+
 <img width="720" alt="Social" src="https://github.com/user-attachments/assets/c1af9e84-5e0b-465e-9579-04d4ee6410a6" />
 
 # Kuro Mute & Force Mic
